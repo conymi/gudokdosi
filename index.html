@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>구독도시 — 오늘 하루, 다른 도시에서 살아보세요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --card: #1a2035;
+  --accent: #4ade80;
+  --accent2: #22d3ee;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-bright: #f8fafc;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(74,222,128,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 80% 80%, rgba(34,211,238,0.06) 0%, transparent 50%),
+    var(--bg);
+}
+.badge {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid rgba(74,222,128,0.3);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.8s ease;
+}
+h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  animation: slideUp 0.8s ease 0.1s both;
+}
+h1 .accent { color: var(--accent); }
+.tagline {
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-bottom: 1rem;
+  animation: slideUp 0.8s ease 0.2s both;
+}
+.slogan {
+  font-size: 0.95rem;
+  color: var(--accent2);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  margin-bottom: 3rem;
+  animation: slideUp 0.8s ease 0.3s both;
+}
+.section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+.section h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--text-bright);
+}
+.section h2 .dot { color: var(--accent); }
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 3rem;
+}
+.card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 1.8rem;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(74,222,128,0.2);
+}
+.card .icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.8rem;
+}
+.card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-bright);
+}
+.card p {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.2rem 1.5rem;
+  background: var(--card);
+  border-radius: 10px;
+  border-left: 3px solid var(--accent);
+}
+.flow-step .num {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--accent);
+  min-width: 2rem;
+}
+.flow-step .desc {
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.flow-step .desc strong { color: var(--text-bright); }
+.tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.tech span {
+  padding: 0.35rem 0.9rem;
+  background: rgba(74,222,128,0.08);
+  border: 1px solid rgba(74,222,128,0.15);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+.api-note {
+  background: var(--card);
+  border: 1px solid rgba(34,211,238,0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+.api-note h3 {
+  color: var(--accent2);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+.api-note p {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.footer .company {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+.footer .status {
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+.footer .contact {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 1rem;
+}
+@keyframes fadeIn {
+  from { opacity:0; } to { opacity:1; }
+}
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <span class="badge">MVP 개발 중</span>
+  <h1><span class="accent">구독도시</span></h1>
+  <p class="tagline">오늘 하루, 다른 도시에서 살아보세요</p>
+  <p class="slogan">여행보다 깊게, 삶은 넓게</p>
+</section>
+
+<section class="section">
+  <h2>서비스 소개<span class="dot">.</span></h2>
+  <p style="color:var(--text-dim); line-height:1.8; margin-bottom:2rem; font-size:0.95rem;">
+    구독도시는 지방 소멸 위기 도시와 도시 생활자를 연결하는 라이프스타일 플랫폼입니다. 
+    5축 매칭 시스템으로 사용자의 취향에 맞는 도시를 추천하고, 
+    하루살이·체험·살아보기로 이어지는 관계를 설계합니다.
+    관계인구 데이터를 지자체에 제공하여 인구 소멸 대응 정책을 지원합니다.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🎯</div>
+      <h3>5축 매칭</h3>
+      <p>템포·소비·공간·관계·생활기반 — 다섯 가지 축으로 사용자와 도시를 매칭합니다.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🏙️</div>
+      <h3>도시 큐레이션</h3>
+      <p>관광공사 데이터 + 로컬 큐레이션으로 관광객이 모르는 진짜 도시를 보여줍니다.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📊</div>
+      <h3>관계인구 데이터</h3>
+      <p>방문·체류·재방문 데이터를 분석하여 지자체 인구 정책에 활용합니다.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>앱 경험 흐름<span class="dot">.</span></h2>
+  <div class="flow">
+    <div class="flow-step">
+      <span class="num">1</span>
+      <div class="desc"><strong>도시가 먼저 질문합니다</strong> — 소개팅처럼, 도시의 페르소나가 사용자에게 질문하며 5축 프로파일을 완성합니다.</div>
+    </div>
+    <div class="flow-step">
+      <span class="num">2</span>
+      <div class="desc"><strong>맞춤 도시 매칭</strong> — 프로파일 기반으로 가장 잘 맞는 도시를 추천합니다.</div>
+    </div>
+    <div class="flow-step">
+      <span class="num">3</span>
+      <div class="desc"><strong>하루살이 코스</strong> — 카카오맵 로컬 검색 API로 검증된 장소 데이터 기반, 맞춤 데이트 코스를 생성합니다.</div>
+    </div>
+    <div class="flow-step">
+      <span class="num">4</span>
+      <div class="desc"><strong>관계 유지</strong> — 방문 후에도 도시와의 관계를 이어갑니다.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>카카오맵 API 활용<span class="dot">.</span></h2>
+  <div class="api-note">
+    <h3>🗺️ 로컬 검색 API 사용 목적</h3>
+    <p>
+      한국관광공사 TourAPI로 수집한 장소 데이터를 카카오맵 로컬 검색 API로 크로스체크하여 
+      영업 여부, 카테고리 정확도, 위치 정보를 검증합니다. 
+      검증된 데이터로 사용자에게 신뢰할 수 있는 장소 정보와 코스를 제공합니다.
+      <br><br>
+      파일럿 도시: 속초시 (164개 장소 검증 완료)<br>
+      확장 대상: 공주시, 군산시, 통영시, 서귀포시
+    </p>
+  </div>
+
+  <h2 style="margin-top:2rem;">기술 스택<span class="dot">.</span></h2>
+  <div class="tech">
+    <span>React Native (Expo)</span>
+    <span>한국관광공사 TourAPI</span>
+    <span>카카오맵 로컬 검색 API</span>
+    <span>네이버 로컬 검색 API</span>
+    <span>Python 데이터 분석</span>
+  </div>
+</section>
+
+<footer class="footer">
+  <p class="company">솔플로우웍스 Solflow Works</p>
+  <p class="status">🟢 MVP 개발 진행 중 — 2026</p>
+  <p class="contact">문의: conymi@github</p>
+</footer>
+
+</body>
+</html>
