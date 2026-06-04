@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gothic+A1:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root{
     --navy:#1a1f36; --navy-deep:#11152a; --blue:#4a6fa5; --accent:#3d7cc9;
@@ -145,6 +146,8 @@
   .r-cta .btn{width:100%;display:block;text-align:center}
   .r-cta-note{font-size:12px;color:rgba(255,255,255,.55);text-align:center;margin-bottom:14px;line-height:1.6}
   .r-share{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);font-size:13px;padding:14px;width:100%;border:none;border-radius:14px;cursor:pointer;font-family:var(--sans);margin-top:10px}
+  #shareCapture{background:var(--navy);padding:24px 20px 28px;border-radius:18px}
+  .capture-brand{text-align:center;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.4);margin-top:18px}
 </style>
 </head>
 <body>
@@ -433,40 +436,53 @@ function showResult(){
   const top1=top[0];
   const sokchoIsTop = top1.city_id==="sokcho";
   const courseHtml = renderSokchoCourse(final.relation);
-  const cards=top.map((c,i)=>{
- 
-    const ready=c.city_id==="sokcho";
-    return `
-      <div class="city-card ${i===0?'top':''}">
-        <div class="cc-head">
-          <span class="cc-rank">${i+1}</span>
-          <span class="cc-name">${c.name}</span>
-          <span class="cc-pct">${c.matchPct}%</span>
-        </div>
-        <div class="cc-type">${c.cityType}</div>
-        <div class="cc-one">${c.oneLiner}</div>
-        ${i===0?`<div class="cc-reason">${c.matchReason}</div>`:``}
-        <div class="cc-foot">
-          <span class="cc-conf">${confLabel[c.confidence]||""}</span>
-          <span class="cc-soon">${ready?"첫 번째 도시":"곧 깊어집니다"}</span>
-        </div>
-      </div>`;
-  }).join('');
-
+  
   ovCount.textContent = "결과";
   ovDots.innerHTML="";
   const ctaNote = sokchoIsTop
     ? `당신과 가장 잘 맞는 도시는 <b>속초</b>.<br>준비가 끝나면 가장 먼저 알려드릴게요.`
     : `당신과 가장 잘 맞는 도시는 <b>${top1.name}</b>.<br>다른 도시도 곧 깊어집니다. 가장 먼저 열리는 건 <b>속초</b> — 준비되면 알려드릴게요.`;
 
+    const firstCardHtml = `
+      <div class="city-card top">
+        <div class="cc-head">
+          <span class="cc-rank">1</span>
+          <span class="cc-name">${top1.name}</span>
+          <span class="cc-pct">${top1.matchPct}%</span>
+        </div>
+        <div class="cc-type">${top1.cityType}</div>
+        <div class="cc-one">${top1.oneLiner}</div>
+        <div class="cc-reason">${top1.matchReason}</div>
+      </div>`;
+  const restCards = top.slice(1).map((c,i)=>{
+    return `
+      <div class="city-card">
+        <div class="cc-head">
+          <span class="cc-rank">${i+2}</span>
+          <span class="cc-name">${c.name}</span>
+          <span class="cc-pct">${c.matchPct}%</span>
+        </div>
+        <div class="cc-type">${c.cityType}</div>
+        <div class="cc-one">${c.oneLiner}</div>
+        <div class="cc-foot">
+          <span class="cc-conf">${confLabel[c.confidence]||""}</span>
+          <span class="cc-soon">곧 깊어집니다</span>
+        </div>
+      </div>`;
+  }).join('');
+
   ovContent.innerHTML = `
     <div class="result q-anim">
-      <div class="r-label">나의 여행 유형</div>
-      <div class="r-emoji">${ct.emoji}</div>
-      <div class="r-type">${ct.name}</div>
-      <div class="r-desc">${ct.desc}</div>
-      <div class="r-section">나와 맞는 도시</div>
-      ${cards}
+      <div id="shareCapture">
+        <div class="r-label">나의 여행 유형</div>
+        <div class="r-emoji">${ct.emoji}</div>
+        <div class="r-type">${ct.name}</div>
+        <div class="r-desc">${ct.desc}</div>
+        <div class="r-section">나와 맞는 도시</div>
+        ${firstCardHtml}
+        <div class="capture-brand">구독도시 · gudokdosi</div>
+      </div>
+      ${restCards}
       <div class="r-section" style="margin-top:30px">먼저 열리는 도시 · 속초</div>
       ${courseHtml}
       <div class="r-cta">
@@ -477,13 +493,27 @@ function showResult(){
     </div>`; 
   overlay.scrollTop=0;
 }
-function shareResult(city, pct){
-  const text = `구독도시에서 나와 맞는 도시를 찾아봤어요. 1순위는 ${city} (${pct}%)!`;
-  if(navigator.share){
-    navigator.share({title:"구독도시", text, url:location.href}).catch(()=>{});
-  } else {
-    navigator.clipboard?.writeText(text+" "+location.href);
-    alert("결과가 복사됐어요. 붙여넣기로 공유해보세요.");
+async function shareResult(city, pct){
+  const node = document.getElementById('shareCapture');
+  if(!node || typeof html2canvas==='undefined'){
+    alert("이미지를 만들 수 없어요. 잠시 후 다시 시도해주세요.");
+    return;
+  }
+  const btn = document.querySelector('.r-share');
+  const orig = btn ? btn.textContent : '';
+  if(btn){ btn.textContent = "이미지 만드는 중…"; btn.disabled = true; }
+  try{
+    if(document.fonts && document.fonts.ready){ await document.fonts.ready; }
+    const canvas = await html2canvas(node, {backgroundColor:"#1a1f36", scale:2, useCORS:true});
+    const dataUrl = canvas.toDataURL("image/png");
+    const fileName = `구독도시_${city}.png`;
+    const a = document.createElement('a');
+    a.href = dataUrl; a.download = fileName;
+    document.body.appendChild(a); a.click(); a.remove();
+  }catch(e){
+    alert("이미지 저장에 실패했어요. 화면 캡처로 공유해주세요.");
+  }finally{
+    if(btn){ btn.textContent = orig; btn.disabled = false; }
   }
 }
 
