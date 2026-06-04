@@ -73,6 +73,8 @@
   .signup{padding:88px 0 72px;background:var(--cream);text-align:center}
   .signup h2{font-family:var(--serif);font-size:clamp(21px,5vw,26px);font-weight:700;line-height:1.6;letter-spacing:-.4px;margin-bottom:12px}
   .signup p{font-size:14px;color:var(--ink-soft);font-weight:300;margin-bottom:32px}
+  .signup-label{font-size:11px;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:18px}
+  .signup-why{font-size:14px;color:var(--ink-soft);font-weight:300;line-height:1.9;margin-bottom:24px}
   .btn-dark{background:var(--navy);color:#fff;font-size:15px;padding:16px 40px}
   .btn-dark:hover{transform:translateY(-2px)}
 
@@ -200,7 +202,9 @@
 <!-- ===== 5. SIGNUP ===== -->
 <section class="signup" id="signup">
   <div class="wrap">
+    <div class="signup-label reveal">살아보기 좋은 곳부터 · 첫 번째 구독도시, 속초</div>
     <h2 class="reveal">속초가 준비되면,<br>가장 먼저 알려드릴게요.</h2>
+    <p class="signup-why reveal">한 도시를 제대로 담는 데는 시간이 걸려요.<br>속초부터, 생활자의 하루까지 차근차근 준비하고 있어요.</p>
     <p class="reveal">이메일만 남겨도 괜찮아요.</p>
     <a class="btn btn-dark reveal" id="signupBtn" href="#" target="_blank" rel="noopener">소식 받기</a>
   </div>
@@ -209,11 +213,8 @@
 <!-- ===== 6. FOOTER ===== -->
 <footer>
   <div class="copy">구독도시 © 2026</div>
-  <div>
-    <a href="#" id="instaLink" target="_blank" rel="noopener">Instagram</a>
-    ·
-    <a href="mailto:hello@gudokdosi.com" id="mailLink">문의</a>
-  </div>
+  <div class="foot-contact">문의. <a href="mailto:conipoky1347@gmail.com" id="mailLink">conipoky1347@gmail.com</a></div>
+  footer .foot-contact{font-size:13px}
 </footer>
 
 <!-- ===== MATCH OVERLAY ===== -->
@@ -372,7 +373,6 @@ const CONFIG = {
   contactEmail: "conipoky1347@gmail.com"
 };
 document.getElementById('signupBtn').href = CONFIG.formUrl;
-document.getElementById('instaLink').href = CONFIG.instaUrl;
 document.getElementById('mailLink').href = "mailto:"+CONFIG.contactEmail;
 
 /* =====================================================================
