@@ -363,8 +363,15 @@ function matchCities(userAxes, topN=3){
     return Object.assign({},c,{matchPct:Math.round(FIT_LO+mix*(FIT_HI-FIT_LO))});
   });
   scored.sort((a,b)=>a.dist-b.dist);
+  // 표시용 %가 동점이면, 더 먼 도시를 1%씩 낮춰 순위와 일치시킴 (순위 자체는 dist 기준 유지)
+  for(let i=1;i<scored.length;i++){
+    if(scored[i].matchPct>=scored[i-1].matchPct){
+      scored[i].matchPct=scored[i-1].matchPct-1;
+    }
+  }
   return scored.slice(0,topN);
 }
+
 
 /* =====================================================================
    설정 — 코니가 폼/SNS 링크 만들면 여기만 교체
