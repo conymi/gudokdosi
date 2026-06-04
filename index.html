@@ -125,6 +125,20 @@
   .cc-foot{display:flex;justify-content:space-between;align-items:center}
   .cc-conf{font-size:10px;color:rgba(255,255,255,.4)}
   .cc-soon{font-size:11px;color:rgba(255,255,255,.45);font-style:italic}
+  /* ===== 속초 하루 동선 카드 ===== */
+  .course-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px 18px;margin-top:18px}
+  .cv-promise{font-size:12px;color:rgba(255,255,255,.6);line-height:1.6;text-align:center;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .cv-promise b{color:rgba(255,255,255,.9);font-weight:700}
+  .cv-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+  .cv-sub{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:16px}
+  .cv-step{display:flex;gap:13px;padding-bottom:16px;position:relative}
+  .cv-step:last-child{padding-bottom:0}
+  .cv-step:not(:last-child)::before{content:"";position:absolute;left:11px;top:26px;bottom:0;width:1px;background:rgba(255,255,255,.15)}
+  .cv-num{flex-shrink:0;width:23px;height:23px;border-radius:12px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;z-index:1}
+  .cv-body{flex:1;padding-top:1px}
+  .cv-place{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px}
+  .cv-place .cv-dur{font-size:11px;font-weight:400;color:rgba(255,255,255,.4);margin-left:6px}
+  .cv-comment{font-size:13px;line-height:1.6;color:rgba(255,255,255,.75)}
   .r-cta{padding:20px 0 8px}
   .r-cta .btn{width:100%;display:block;text-align:center}
   .r-cta-note{font-size:12px;color:rgba(255,255,255,.55);text-align:center;margin-bottom:14px;line-height:1.6}
@@ -274,6 +288,58 @@ const CITY_SCORES = [
    confidence:"mid",cityType:"일상 여행자형",oneLiner:"일상의 아름다움을 함께 나누는 곳",
    matchReason:"5개 도시 중 유일하게 '함께·활기' 쪽으로 기운 도시입니다. 혼자만의 고요함보다 사람과 분위기 속에 섞이고 싶다면 잘 맞아요. 가장 많은 볼거리가 매일 다른 하루를 만들어 줍니다."},
 ];
+/* =====================================================================
+   속초 하루 동선 — 관계축 분기 (sokcho_places.json 실제 장소·멘트)
+   ===================================================================== */
+   const SOKCHO_COURSES = {
+  solo: {
+    title: "혼자 걷는 속초 하루",
+    sub: "고요하게, 천천히",
+    steps: [
+      {name:"영랑호",         dur:"아침", comment:"아침에 와봐. 물 위에 산이 뒤집혀 있어."},
+      {name:"상도문돌담마을", dur:"낮",   comment:"관광지 느낌 아니야. 진짜 동네."},
+      {name:"영금정",         dur:"일몰", comment:"일몰 때 여기 서 있으면 소리가 달라져."},
+    ]
+  },
+  together: {
+    title: "함께 걷는 속초 하루",
+    sub: "활기차게, 나란히",
+    steps: [
+      {name:"아바이마을", dur:"아침", comment:"갯배 타고 건너가. 오징어순대 먹고."},
+      {name:"대포항",     dur:"낮",   comment:"물회는 여기. 아침에 와야 제대로야."},
+      {name:"동명항",     dur:"저녁", comment:"작은 항구인데 분위기 좋아."},
+    ]
+  },
+  neutral: {
+    title: "속초 하루 동선",
+    sub: "처음이라면, 이 흐름으로",
+    steps: [
+      {name:"영랑호",     dur:"아침", comment:"아침에 와봐. 물 위에 산이 뒤집혀 있어."},
+      {name:"아바이마을", dur:"낮",   comment:"갯배 타고 건너가. 오징어순대 먹고."},
+      {name:"영금정",     dur:"일몰", comment:"일몰 때 여기 서 있으면 소리가 달라져."},
+    ]
+  }
+};
+function renderSokchoCourse(relation){
+  const c = relation<=0.25 ? SOKCHO_COURSES.solo
+          : relation>=0.75 ? SOKCHO_COURSES.together
+          : SOKCHO_COURSES.neutral;
+  const steps = c.steps.map((s,i)=>`
+    <div class="cv-step">
+      <div class="cv-num">${i+1}</div>
+      <div class="cv-body">
+        <div class="cv-place">${s.name}<span class="cv-dur">${s.dur}</span></div>
+        <div class="cv-comment">${s.comment}</div>
+      </div>
+    </div>`).join('');
+  return `
+    <div class="course-card">
+      <div class="cv-promise">지금은 동선까지.<br><b>곧, 그 동네 사람의 하루까지.</b></div>
+      <div class="cv-title">${c.title}</div>
+      <div class="cv-sub">${c.sub}</div>
+      ${steps}
+    </div>`;
+}
 const AXIS_KEYS=["tempo","consume","space","relation","infra"];
 const AXIS_WEIGHTS={tempo:1,consume:1,space:1,relation:1,infra:1};
 const FIT_LO=58, FIT_HI=94;
@@ -366,7 +432,10 @@ function showResult(){
   const top=matchCities(final,3);
   const confLabel={high:"데이터 충분",mid:"데이터 보통",low:"데이터 부족"};
   const top1=top[0];
+  const sokchoIsTop = top1.city_id==="sokcho";
+  const courseHtml = renderSokchoCourse(final.relation);
   const cards=top.map((c,i)=>{
+ 
     const ready=c.city_id==="sokcho";
     return `
       <div class="city-card ${i===0?'top':''}">
@@ -387,6 +456,10 @@ function showResult(){
 
   ovCount.textContent = "결과";
   ovDots.innerHTML="";
+  const ctaNote = sokchoIsTop
+    ? `당신과 가장 잘 맞는 도시는 <b>속초</b>.<br>준비가 끝나면 가장 먼저 알려드릴게요.`
+    : `당신과 가장 잘 맞는 도시는 <b>${top1.name}</b>.<br>다른 도시도 곧 깊어집니다. 가장 먼저 열리는 건 <b>속초</b> — 준비되면 알려드릴게요.`;
+
   ovContent.innerHTML = `
     <div class="result q-anim">
       <div class="r-label">나의 여행 유형</div>
@@ -395,12 +468,14 @@ function showResult(){
       <div class="r-desc">${ct.desc}</div>
       <div class="r-section">나와 맞는 도시</div>
       ${cards}
+      <div class="r-section" style="margin-top:30px">먼저 열리는 도시 · 속초</div>
+      ${courseHtml}
       <div class="r-cta">
-        <div class="r-cta-note">당신과 가장 잘 맞는 도시는 <b>${top1.name}</b>.<br>속초가 준비되면 가장 먼저 알려드릴게요.</div>
-        <a class="btn btn-light" href="${CONFIG.formUrl}" target="_blank" rel="noopener">소식 받기</a>
+        <div class="r-cta-note">${ctaNote}</div>
+        <a class="btn btn-light" href="${CONFIG.formUrl}" target="_blank" rel="noopener">속초 소식 받기</a>
         <button class="r-share" onclick="shareResult('${top1.name}', ${top1.matchPct})">📤 결과 공유하기</button>
       </div>
-    </div>`;
+    </div>`; 
   overlay.scrollTop=0;
 }
 function shareResult(city, pct){
