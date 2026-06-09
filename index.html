@@ -3,11 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>구독도시 — 취향도시를 구독한다는 것</title>
-<meta name="description" content="한 번 가고 마는 곳이 아니라, 나와 맞는 도시. 다섯 개의 질문으로 당신의 도시를 찾아드려요.">
-<meta property="og:title" content="구독도시 — 취향도시를 구독한다는 것">
-<meta property="og:description" content="나에게 맞는 도시, 찾아드려요. 가장 먼저 깊어지는 도시는 속초예요.">
+<title>여행보다 깊게, 삶을 넓게 — 구독도시</title>
+<meta name="description" content="다섯 개의 질문에 답하면, 당신과 가장 잘 맞는 곳을 찾아드립니다.">
+<meta property="og:title" content="여행보다 깊게, 삶을 넓게 — 구독도시">
+<meta property="og:description" content="다섯 개의 질문에 답하면, 당신과 가장 잘 맞는 곳을 찾아드립니다.">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="여행보다 깊게, 삶을 넓게 — 구독도시">
+<meta name="twitter:description" content="다섯 개의 질문에 답하면, 당신과 가장 잘 맞는 곳을 찾아드립니다.">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -47,7 +50,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.7;
+  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.7;word-break:keep-all;
        -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
   img{display:block;max-width:100%}
   ::selection{background:rgba(123,95,176,.22)}
@@ -119,7 +122,7 @@
 
   /* ===== 공감 ===== */
   .empathy .ph{aspect-ratio:3/4;margin-bottom:46px;max-height:74vh}
-  .editorial{font-family:var(--serif);font-size:clamp(21px,2.1vw,29px);line-height:1.9;letter-spacing:-.01em;font-weight:400;color:var(--ink)}
+  .editorial{font-family:var(--serif);font-size:clamp(21px,2.1vw,29px);line-height:1.9;letter-spacing:-.01em;font-weight:400;color:var(--ink);text-wrap:pretty}
   .editorial .lead{display:block;font-weight:600;margin-bottom:18px}
   .editorial .turn{display:block;margin-top:18px;color:var(--accent);font-weight:500}
 
@@ -153,7 +156,7 @@
 
   /* ===== 매칭 CTA ===== */
   .match{text-align:left}
-  .match .q{font-family:var(--serif);font-size:clamp(30px,3.3vw,46px);line-height:1.3;letter-spacing:-.02em;font-weight:600;color:var(--on-dark);margin-bottom:16px}
+  .match .q{font-family:var(--serif);font-size:clamp(30px,3.3vw,46px);line-height:1.3;letter-spacing:-.02em;font-weight:600;color:var(--on-dark);margin-bottom:16px;text-wrap:pretty}
   .match .qsub{font-size:14px;color:var(--on-dark-soft);letter-spacing:.06em;margin-bottom:40px}
 
   /* buttons */
@@ -339,8 +342,7 @@
           <span class="lead">회의가 끝나고, 또 다른 나로 출근한다.</span>
           노트북을 덮고 십 분을 걸으면<br>
           파도 소리가 키보드 소리를 덮는다.
-          <span class="turn">사는 곳을 바꾸면,
-그 안의 나도 조금 달라진다.</span>
+          <span class="turn">사는 곳을 바꾸면,<br>그 안의 나도 조금 달라진다.</span>
         </p>
       </div>
     </section>
@@ -370,8 +372,7 @@
       <div class="panel-inner">
         <span class="first reveal">FIRST CITY · 속초</span>
         <h2 class="reveal d1">구독 도시가 준비되면,<br>가장 먼저 알려드릴게요.</h2>
-        <p class="reveal d1">도시는 하나씩, 깊게.
-가장 먼저 열리는 곳은 속초.</p>
+        <p class="reveal d1">도시는 하나씩, 깊게.<br>가장 먼저 열리는 곳은 속초.</p>
         <p class="reveal d2">
 </p>
         <div class="row reveal d2">
