@@ -280,7 +280,8 @@
     .hero-cue{display:flex;align-items:center;gap:10px;position:relative;z-index:2;
       font-size:12px;letter-spacing:.16em;color:var(--on-dark-mute)}
     .hero-cue .line{width:34px;height:1px;background:var(--on-dark-line)}
-    .aside-foot{display:flex;flex-direction:column;gap:18px}
+    .aside{position:relative;height:auto;min-height:100vh;width:100%;max-width:none;min-width:0;
+      justify-content:flex-start;gap:clamp(28px,6vh,64px);padding-top:clamp(40px,8vh,80px);padding-bottom:40px}
     .panel{min-height:auto;padding:84px clamp(28px,7vw,48px)}
     .cities .fog{height:260px}
   }
